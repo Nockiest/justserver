@@ -6,8 +6,8 @@ app.use(express.json()); // for parsing application/json
 app.use(cors());
 // Array of finance accounts
 let financeAccounts = [
-  { name: 'MámaSpoř', value: 200_000, interest: 0.039583 },
-  { name: 'JáSpoř', value: 30200, interest: 0.039583 },
+  { name: 'MámaSpoř', value: 200_000, interest: 0.0039583 },
+  { name: 'JáSpoř', value: 30200, interest: 0.0039583 },
 
 ];
 
