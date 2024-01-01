@@ -6,17 +6,24 @@ app.use(express.json()); // for parsing application/json
 app.use(cors());
 // Array of finance accounts
 let financeAccounts = [
-  { name: 'MámaSpoř', value: 200_000, interest: 0.0039583 },
-  { name: 'JáSpoř', value: 30200, interest: 0.0039583 },
+  { name: 'MámaSpoř', value: 200_051, interest: 0.0039583 },
+  { name: 'JáSpoř', value: 30251, interest: 0.0039583 },
 
 ];
 
 // Function to add interest to accounts at the end of each month
 function addInterest() {
+  let totalEarned = 0;
 
   financeAccounts.forEach(account => {
-    account.value += account.value * account.interest;
-    console.log( account.value)
+    const earned = account.value * account.interest;
+    totalEarned += earned;
+    account.value += earned;
+  });
+
+  const splitAmount = totalEarned / financeAccounts.length;
+  financeAccounts.forEach(account => {
+    account.value += splitAmount;
   });
 }
 
