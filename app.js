@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
 const app = express();
 app.use(express.json()); // for parsing application/json
 app.use(cors());
+
 // Array of finance accounts
 let financeAccounts = [
   { name: 'MámaSpoř', value: 200_051, interest: 0.0039583 },
