@@ -11,6 +11,8 @@ let financeAccounts = [
 
 ];
 
+// Function to add interest to accounts at the end of each monthconst nodemailer = require('nodemailer');
+
 // Function to add interest to accounts at the end of each month
 function addInterest() {
   let totalEarned = 0;
@@ -24,6 +26,32 @@ function addInterest() {
   const splitAmount = totalEarned / financeAccounts.length;
   financeAccounts.forEach(account => {
     account.value += splitAmount;
+  });
+
+  // Create a transporter for sending emails
+  const transporter = nodemailer.createTransport({
+    service: 'SendGrid',
+    auth: {
+      user: 'ondralukes06@seznam.cz',
+      pass: 'XOndrejx',
+    },
+  });
+
+  // Compose the email message
+  const mailOptions = {
+    from: 'ondralukes06@seznam.cz',
+    to: 'ondralukes06@seznam.cz',
+    subject: 'Interest added to finance accounts',
+    text: `Finance accounts have been updated with interest. Updated values:\n\n${JSON.stringify(financeAccounts, null, 2)}`,
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
   });
 }
 
@@ -61,4 +89,29 @@ app.post('/insert', (req, res) => {
 // Start the server
 app.listen(3000, () => {
   console.log('Server started on port 3000');
+});
+
+const transporter = nodemailer.createTransport({
+  service: 'SendGrid',
+  auth: {
+    user: 'ondralukes06@seznam.cz',
+    pass: 'XOndrejx',
+  },
+});
+
+// Compose the email message
+const mailOptions = {
+  from: 'ondralukes06@seznam.cz',
+  to: 'ondralukes06@seznam.cz',
+  subject: 'Interest added to finance accounts',
+  text: `Finance accounts have been updated with interest. Updated values:\n\n${JSON.stringify(financeAccounts, null, 2)}`,
+};
+
+// Send the email
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.log('Error sending email:', error);
+  } else {
+    console.log('Email sent:', info.response);
+  }
 });
