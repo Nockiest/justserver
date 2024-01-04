@@ -1,6 +1,6 @@
+// const nodemailer = require('nodemailer');
 const express = require('express');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
 const schedule = require('node-schedule');
 const app = express();
 app.use(express.json()); // for parsing application/json
@@ -8,12 +8,10 @@ app.use(cors());
 
 // Array of finance accounts
 let financeAccounts = [
-  { name: 'MámaSpoř', value: 200_051, interest: 0.0039583 },
-  { name: 'JáSpoř', value: 30251, interest: 0.0039583 },
+  { name: 'MámaSpoř', value: 200_051, interest: 0.0001369836},
+  { name: 'JáSpoř', value: 30251, interest: 0.0001369836 },
 
 ];
-
-// Function to add interest to accounts at the end of each monthconst nodemailer = require('nodemailer');
 
 // Function to add interest to accounts at the end of each month
 function addInterest() {
@@ -30,41 +28,12 @@ function addInterest() {
     account.value += splitAmount;
   });
 
-  // Create a transporter for sending emails
-  const transporter = nodemailer.createTransport({
-    service: 'SendGrid',
-    auth: {
-      user: 'ondralukes06@seznam.cz',
-      pass: 'XOndrejx',
-    },
-  });
-
-  // Compose the email message
-  const mailOptions = {
-    from: 'ondralukes06@seznam.cz',
-    to: 'ondralukes06@seznam.cz',
-    subject: 'Interest added to finance accounts',
-    text: `Finance accounts have been updated with interest. Updated values:\n\n${JSON.stringify(financeAccounts, null, 2)}`,
-  };
-
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
-  });
 }
 
+// const job = schedule.scheduleJob('59 23 * * *', addDailyInterest);
 
-function endOfMonthTask() {
-  console.log("Executing task at the end of the month");
-  // Your task logic here
-}
-
-// Schedule the task to run on the last day of every month at 23:59
-const job = schedule.scheduleJob('59 23 L * *',  addInterest);
+// Schedule the task to run on  every day
+const job = schedule.scheduleJob('59 23 * * *',  addInterest);
 // const job2 = schedule.scheduleJob('* * * * * *', addInterest);
 // API endpoint to retrieve account data
 app.get('/accounts', (req, res) => {
@@ -93,27 +62,30 @@ app.listen(3000, () => {
   console.log('Server started on port 3000');
 });
 
-const transporter = nodemailer.createTransport({
-  service: 'SendGrid',
-  auth: {
-    user: 'ondralukes06@seznam.cz',
-    pass: 'XOndrejx',
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   // service: 'SendGrid',
+//   host: "smtp.sendgrid.net",
+//   port: 587,
+//   secure: false, // `true` for port 465, `false` for all other ports
+//   auth: {
+//     user: 'ondralukes06@seznam.cz',
+//     pass: ' ',
+//   },
+// });
 
-// Compose the email message
-const mailOptions = {
-  from: 'ondralukes06@seznam.cz',
-  to: 'ondralukes06@seznam.cz',
-  subject: 'Interest added to finance accounts',
-  text: `Finance accounts have been updated with interest. Updated values:\n\n${JSON.stringify(financeAccounts, null, 2)}`,
-};
+// // Compose the email message
+// const mailOptions = {
+//   from: 'ondralukes06@seznam.cz',
+//   to: 'ondralukes06@seznam.cz',
+//   subject: 'Interest added to finance accounts',
+//   text: `Finance accounts have been updated with interest. Updated values:\n\n${JSON.stringify(financeAccounts, null, 2)}`,
+// };
 
-// Send the email
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.log('Error sending email:', error);
-  } else {
-    console.log('Email sent:', info.response);
-  }
-});
+// // Send the email
+// transporter.sendMail(mailOptions, (error, info) => {
+//   if (error) {
+//     console.log('Error sending email:', error);
+//   } else {
+//     console.log('Email sent:', info.response);
+//   }
+// });
